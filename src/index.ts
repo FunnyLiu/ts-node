@@ -320,6 +320,7 @@ export const DEFAULTS: RegisterOptions = {
   scope: yn(env.TS_NODE_SCOPE),
   files: yn(env.TS_NODE_FILES),
   pretty: yn(env.TS_NODE_PRETTY),
+  // 其实用的编译器是TS_NODE_COMPILER
   compiler: env.TS_NODE_COMPILER,
   compilerOptions: parse(env.TS_NODE_COMPILER_OPTIONS),
   ignore: split(env.TS_NODE_IGNORE),
@@ -422,6 +423,7 @@ function cachedLookup<T> (fn: (arg: string) => T): (arg: string) => T {
 }
 
 /** @internal */
+// node module的extensions
 export function getExtensions (config: _ts.ParsedCommandLine) {
   const tsExtensions = ['.ts']
   const jsExtensions = []
@@ -446,6 +448,7 @@ export function register (opts: RegisterOptions = {}): Service {
   process[REGISTER_INSTANCE] = service
 
   // Register the extensions.
+  // 注册node的模块extensions
   registerExtensions(service.options.preferTsExts, extensions, service, originalJsHandler)
 
   // Require specified modules before start-up.
@@ -466,6 +469,7 @@ export function create (rawOptions: CreateOptions = {}): Service {
    * Load the typescript compiler. It is required to load the tsconfig but might
    * be changed by the tsconfig, so we sometimes have to do this twice.
    */
+  // 利用typescript模块
   function loadCompiler (name: string | undefined) {
     const compiler = require.resolve(name || 'typescript', { paths: [cwd, __dirname] })
     const ts: typeof _ts = require(compiler)

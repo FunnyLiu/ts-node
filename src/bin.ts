@@ -144,6 +144,7 @@ export function main (argv: string[] = process.argv.slice(2), entrypointArgs: Re
   /** Unresolved.  May point to a symlink, not realpath.  May be missing file extension */
   const scriptPath = args._.length ? resolve(cwd, args._[0]) : undefined
   const state = new EvalState(scriptPath || join(cwd, EVAL_FILENAME))
+  // 终端命令行交互流程的对象
   const replService = createRepl({ state })
   const { evalAwarePartialHost } = replService
 

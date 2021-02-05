@@ -1,3 +1,87 @@
+
+# 源码分析
+
+## 文件结构
+
+``` bash
+/Users/liufang/openSource/FunnyLiu/ts-node
+├── LICENSE
+├── README.md
+├── codecov.yml
+├── dist-raw
+|  ├── README.md
+|  ├── node-cjs-loader-utils.js
+|  ├── node-errors.js
+|  ├── node-esm-resolve-implementation.js
+|  ├── node-internal-fs.js
+|  ├── node-options.js
+|  ├── node-package-json-reader.js
+|  └── node-primordials.js
+├── esm
+|  └── transpile-only.mjs
+├── esm-usage-example
+|  ├── README.md
+|  ├── bar.ts
+|  ├── foo.ts
+|  ├── index.js
+|  ├── package.json
+|  └── tsconfig.json
+├── esm.mjs
+├── logo.svg
+├── nyc.config.js
+├── package-lock.json
+├── package.json
+├── raw
+|  ├── node-esm-resolve-implementation-v13.12.0.js
+|  └── node-esm-resolve-implementation-v15.3.0.js
+├── register
+|  ├── files.js
+|  ├── index.js
+|  ├── transpile-only.js
+|  └── type-check.js
+├── screenshot.png
+├── scripts
+|  ├── build-pack.js
+|  ├── create-merged-schema.ts
+|  └── update-schemastore-schema-with-compiler-options.ts
+├── src
+|  ├── bin-script-deprecated.ts
+|  ├── bin-script.ts
+|  ├── bin-transpile.ts
+|  ├── bin.ts - ts-node的入口
+|  ├── esm.ts
+|  ├── externs.d.ts
+|  ├── index.spec.ts
+|  ├── index.ts
+|  ├── repl.ts
+|  └── tsconfig-schema.ts
+
+
+directory: 49 file: 149 symboliclink: 1
+
+ignored: directory (5)
+
+```
+
+## 外部模块依赖
+
+![img](./outer.svg)
+
+## 内部模块依赖
+
+![img](./inner.svg)
+  
+
+
+## 知识点
+
+### 如何工作的
+
+ts-node不是将typescript编译成js再执行，而是直接通过hack开启了node的ts运行时。
+
+它通过扩展require.extensions:[笔记内容](https://github.com/FunnyLiu/ts-node/blob/readsource/src/index.ts#L1078)，来完成node版loader的扩展，将ts、tsx等运行时执行赋予node，至于node的loader，也就是module.extensions，可以参考[FunnyLiu/node at readsource](https://github.com/FunnyLiu/node/tree/readsource#moduleextensions)
+
+
 # ![TypeScript Node](logo.svg?sanitize=true)
 
 [![NPM version][npm-image]][npm-url]
